@@ -10,7 +10,10 @@ export default function Home() {
           <Link href="/week-2">Go to week-2</Link>
         </p>
         <p>
-          <Link href="/week-3">Go to week-2</Link>
+          <Link href="/week-3">Go to week-3</Link>
+        </p>
+        <p>
+          <Link href="/week-4">Go to week-4</Link>
         </p>
       </main>
     </div>
