@@ -19,13 +19,11 @@ export default function NewItem() {
       alert(
         "Item name field cannot be empty and must be at least 2 characters",
       );
-      setNameTouched(true);
-      return;
+    } else {
+      alert(
+        `Name: ${newItem.name}\nQuantity: ${newItem.quantity}\nCategory: ${newItem.category}`,
+      );
     }
-
-    alert(
-      `Name: ${newItem.name}\nQuantity: ${newItem.quantity}\nCategory: ${newItem.category}`,
-    );
 
     setItemDetails({
       name: "",
@@ -59,16 +57,18 @@ export default function NewItem() {
                 setItemDetails({ ...itemDetails, name: e.target.value })
               }
               onBlur={() => setNameTouched(true)}
+              onFocus={() => setNameTouched(false)}
               className={`w-full rounded-lg border px-3 py-2 text-gray-800
-                focus:outline-none focus:ring-2
                 ${
-                  nameTouched && itemDetails.name.length < 2
+                  nameTouched && !isNameValid
                     ? "border-red-500 focus:ring-red-300"
                     : "border-gray-300 focus:ring-blue-300"
                 }`}
             />
-            {nameTouched && !itemDetails.name && (
-              <p className="mt-1 text-sm text-red-500">Item name is required</p>
+            {nameTouched && !isNameValid && (
+              <p className="mt-1 text-sm text-red-500">
+                Item name is required - must be longer than 2 characters
+              </p>
             )}
           </div>
 
