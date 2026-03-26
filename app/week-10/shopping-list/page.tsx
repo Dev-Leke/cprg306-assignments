@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import ItemList from "./item-list";
 import NewItem from "./new-item";
 import MealIdeas from "./meal-ideas";
-import itemsData from "./items.json";
 import { useUserAuth } from "../_utils/auth-context";
-
+import { getItems, addItem } from "../_services/shopping-list-service";
 type ItemObject = {
   id: string;
   name: string;
@@ -20,7 +19,7 @@ type NewItemData = Omit<ItemObject, "id">;
 export default function Page() {
   const { user } = useUserAuth();
   const router = useRouter();
-  const [items, setItems] = useState(itemsData);
+  const [items, setItems] = useState<ItemObject[]>([]);
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,9 +28,22 @@ export default function Page() {
     }
   }, [user, router]);
 
-  function handleAddItem(newItem: NewItemData) {
-    const newItemWithId = { ...newItem, id: crypto.randomUUID() };
-    setItems((prevItems) => [...prevItems, newItemWithId]);
+  useEffect(() => {
+    const loadItems = async () => {
+      if (user) {
+        const data = await getItems(user.uid);
+        setItems(data);
+      }
+    };
+    loadItems();
+  }, [user]);
+
+  async function handleAddItem(newItem: NewItemData) {
+    console.log(user);
+    if (user) {
+      const id = await addItem(user.uid, newItem);
+      setItems((prev) => [...prev, { id, ...newItem }]);
+    }
   }
 
   function handleItemSelect(itemName: string) {
