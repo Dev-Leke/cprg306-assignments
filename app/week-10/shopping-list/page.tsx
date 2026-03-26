@@ -17,16 +17,17 @@ type ItemObject = {
 type NewItemData = Omit<ItemObject, "id">;
 
 export default function Page() {
-  const { user } = useUserAuth();
+  const { user, loading } = useUserAuth();
   const router = useRouter();
   const [items, setItems] = useState<ItemObject[]>([]);
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null);
 
   useEffect(() => {
+    if (loading) return;
     if (!user) {
       router.replace("/week-10");
     }
-  }, [user, router]);
+  }, [user, router, loading]);
 
   useEffect(() => {
     const loadItems = async () => {
