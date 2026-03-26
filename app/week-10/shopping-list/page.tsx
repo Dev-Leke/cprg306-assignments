@@ -24,7 +24,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!user) {
-      router.replace("/week-8");
+      router.replace("/week-10");
     }
   }, [user, router]);
 
